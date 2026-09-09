@@ -1,0 +1,135 @@
+# AquaShell Start Menu v0.2
+# Target: redesigned Windows 11 Start menu (25H2+)
+# Goal: macOS-like launcher
+# - force side-by-side layout to avoid Windows category cards
+# - hide All Apps column
+# - keep pinned apps as the main launcher grid
+# - keep search at the top
+# - hide user/profile/power/footer/recommendations
+# - compact acrylic/glass panel
+
+# Important: this is the key change from v0.1.
+# The redesigned Start menu can persist the Category view; forcing
+# newLayoutSideBySide gives us a predictable pinned-app surface.
+disableNewStartMenuLayout: newLayoutSideBySide
+
+controlStyles:
+  # Main launcher shell
+  - target: Grid#MainMenu
+    styles:
+      - Visibility=Visible
+      - Width=520
+      - Background=Transparent
+      - CornerRadius=18
+
+  - target: Grid#FrameRoot
+    styles:
+      - MaxHeight=560
+
+  # Make the side-by-side layout effectively a single pinned-app column.
+  # Left column (All Apps) becomes 0, right column (Pinned) uses all space.
+  - target: Grid#SideBySidePinnedWrapper
+    styles:
+      - ColumnDefinitions:=<ColumnDefinitionCollection><ColumnDefinition Width="0"/><ColumnDefinition Width="1*"/></ColumnDefinitionCollection>
+
+  # Hide All Apps / category side entirely.
+  - target: GridView#AllAppsGrid > Border > Grid#SideBySidePinnedWrapper > ScrollViewer#ScrollViewer
+    styles:
+      - Visibility=Collapsed
+      - Width=0
+
+  - target: Grid#AllListHeading
+    styles:
+      - Visibility=Collapsed
+
+  - target: Grid#AllListHeading > Microsoft.UI.Xaml.Controls.DropDownButton#ViewSelectionButton
+    styles:
+      - Visibility=Collapsed
+
+  # Pinned apps fill the launcher.
+  - target: ScrollViewer#SideBySidePinnedScrollViewer
+    styles:
+      - Grid.Column=1
+      - Margin=0
+
+  - target: StartMenu.PinnedList
+    styles:
+      - Margin=18,4,18,14
+
+  - target: Grid#SideBySidePinnedWrapper > ScrollViewer > Border#Root > Grid > ScrollContentPresenter > ItemsPresenter > ItemsWrapGrid
+    styles:
+      - Margin=12,0,12,10
+
+  # Search bar at the top.
+  - target: StartMenu.SearchBoxToggleButton
+    styles:
+      - Visibility=Visible
+      - Height=40
+      - Margin=18,12,18,10
+      - CornerRadius=12
+
+  # Hide pinned heading for a cleaner launcher appearance.
+  - target: Windows.UI.Xaml.Controls.TextBlock#PinnedListHeaderText
+    styles:
+      - Visibility=Collapsed
+
+  # Remove user / power / bottom navigation.
+  - target: Grid#NavPanePlaceholder
+    styles:
+      - Visibility=Collapsed
+
+  - target: StartDocked.NavigationPaneView#NavigationPane
+    styles:
+      - Visibility=Collapsed
+
+  - target: StartDocked.UserTileView
+    styles:
+      - Visibility=Collapsed
+
+  - target: StartDocked.PowerOptionsView#PowerButton
+    styles:
+      - Visibility=Collapsed
+
+  # Remove recommendations / suggestions.
+  - target: GridView#RecommendedList
+    styles:
+      - Visibility=Collapsed
+
+  - target: Windows.UI.Xaml.Controls.Grid#NoTopLevelSuggestionsText
+    styles:
+      - Visibility=Collapsed
+
+  - target: Windows.UI.Xaml.Controls.Grid#TopLevelSuggestionsListHeader
+    styles:
+      - Visibility=Collapsed
+
+  - target: Grid#TopLevelSuggestionsRoot
+    styles:
+      - Visibility=Collapsed
+
+  - target: Grid#TopLevelSuggestionsRoot > Grid[2]
+    styles:
+      - MinHeight=0
+
+  - target: Grid#TopLevelHeader > Grid[2] > Button
+    styles:
+      - Visibility=Collapsed
+
+  # Acrylic/glass shell.
+  - target: Border#AcrylicBorder
+    styles:
+      - Background:=<AcrylicBrush TintColor="#1C1C1E" FallbackColor="#E61C1C1E" TintOpacity="0.30" TintLuminosityOpacity="0.68" Opacity="1"/>
+      - BorderBrush:=<SolidColorBrush Color="#3DFFFFFF" />
+      - BorderThickness=1
+      - CornerRadius=18
+
+  - target: Border#AppBorder
+    styles:
+      - Background:=<AcrylicBrush TintColor="#1C1C1E" FallbackColor="#E61C1C1E" TintOpacity="0.24" TintLuminosityOpacity="0.64" Opacity="1"/>
+      - BorderBrush:=<SolidColorBrush Color="#24FFFFFF" />
+      - CornerRadius=18
+
+  # Remove any remaining layer/filler look.
+  - target: Border#LayerBorder
+    styles:
+      - Visibility=Collapsed
