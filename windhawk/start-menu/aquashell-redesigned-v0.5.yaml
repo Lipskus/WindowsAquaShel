@@ -1,0 +1,159 @@
+# AquaShell Start Menu v0.5
+# Target: redesigned Windows 11 Start menu (25H2+)
+# Safe baseline after v0.3/v0.4 blank-window issue.
+# Key fix: DO NOT collapse Grid#TopLevelSuggestionsRoot.
+# That container also owns the pinned-apps area on the redesigned Start menu.
+# Goal:
+# - pinned apps visible
+# - no search box
+# - no All Apps/category grid
+# - no Recommended list
+# - no user tile / power button
+# - acrylic/glass shell
+
+controlStyles:
+
+  # ==========================================================
+  # MAIN WINDOW
+  # ==========================================================
+
+  - target: Grid#MainMenu
+    styles:
+      - Visibility=Visible
+      - Width=500
+      - Background=Transparent
+      - CornerRadius=18
+
+  - target: Grid#FrameRoot
+    styles:
+      - MaxHeight=520
+
+
+  # ==========================================================
+  # HIDE SEARCH, BUT KEEP THE MAIN START FRAME
+  # ==========================================================
+
+  - target: StartMenu.SearchBoxToggleButton
+    styles:
+      - Height=0
+      - MinHeight=0
+      - MaxHeight=0
+      - Margin=0
+      - Opacity=0
+
+  - target: Border#AcrylicOverlay
+    styles:
+      - Margin=0,-64,0,0
+
+  - target: Frame#StartFrame
+    styles:
+      - Margin=0,-64,0,0
+
+
+  # ==========================================================
+  # KEEP PINNED APPS VISIBLE
+  # ==========================================================
+
+  - target: StartMenu.PinnedList
+    styles:
+      - Visibility=Visible
+      - MinHeight=380
+      - Margin=18,16,18,18
+
+  - target: GridView#PinnedList
+    styles:
+      - Visibility=Visible
+
+  - target: Windows.UI.Xaml.Controls.TextBlock#PinnedListHeaderText
+    styles:
+      - Visibility=Collapsed
+
+  - target: Grid#ShowMorePinnedGrid
+    styles:
+      - Visibility=Collapsed
+
+
+  # ==========================================================
+  # HIDE ALL APPS / CATEGORY AREA
+  # ==========================================================
+
+  - target: GridView#AllAppsGrid
+    styles:
+      - Visibility=Collapsed
+      - MaxHeight=0
+
+  - target: Grid#AllListHeading
+    styles:
+      - Visibility=Collapsed
+
+  - target: TextBlock#AllListHeadingText
+    styles:
+      - Visibility=Collapsed
+
+  - target: Microsoft.UI.Xaml.Controls.DropDownButton#ViewSelectionButton
+    styles:
+      - Visibility=Collapsed
+
+
+  # ==========================================================
+  # HIDE RECOMMENDED WITHOUT COLLAPSING THE PARENT ROOT
+  # IMPORTANT: leave Grid#TopLevelSuggestionsRoot alone.
+  # ==========================================================
+
+  - target: GridView#RecommendedList
+    styles:
+      - Visibility=Collapsed
+
+  - target: Grid#TopLevelSuggestionsListHeader
+    styles:
+      - Height=0
+      - Visibility=Collapsed
+
+  - target: Grid#NoTopLevelSuggestionsText
+    styles:
+      - Height=0
+      - Visibility=Collapsed
+
+  - target: Grid#TopLevelSuggestionsContainer
+    styles:
+      - Height=0
+
+  - target: Grid#ShowMoreSuggestions
+    styles:
+      - Visibility=Collapsed
+
+
+  # ==========================================================
+  # HIDE USER + POWER ONLY
+  # Do not collapse the whole NavigationPane.
+  # ==========================================================
+
+  - target: StartDocked.UserTileView
+    styles:
+      - Visibility=Collapsed
+
+  - target: StartDocked.PowerOptionsView#PowerButton
+    styles:
+      - Visibility=Collapsed
+
+
+  # ==========================================================
+  # GLASS / ACRYLIC
+  # ==========================================================
+
+  - target: Border#AcrylicBorder
+    styles:
+      - Background:=<AcrylicBrush TintColor="#1C1C1E" FallbackColor="#E61C1C1E" TintOpacity="0.30" TintLuminosityOpacity="0.68" Opacity="1"/>
+      - BorderBrush:=<SolidColorBrush Color="#3DFFFFFF" />
+      - BorderThickness=1
+      - CornerRadius=18
+
+  - target: Border#AppBorder
+    styles:
+      - Background:=<AcrylicBrush TintColor="#1C1C1E" FallbackColor="#E61C1C1E" TintOpacity="0.24" TintLuminosityOpacity="0.64" Opacity="1"/>
+      - BorderBrush:=<SolidColorBrush Color="#24FFFFFF" />
+      - CornerRadius=18
+
+  - target: Border#LayerBorder
+    styles:
+      - Visibility=Collapsed
