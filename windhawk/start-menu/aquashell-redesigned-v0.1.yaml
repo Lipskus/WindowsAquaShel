@@ -1,0 +1,101 @@
+# AquaShell Start Menu v0.1
+# Target: redesigned Windows 11 Start menu (25H2+)
+# Goal: compact macOS-like launcher
+# - search at top
+# - pinned apps only
+# - no user profile
+# - no power controls
+# - no recommendations
+# - compact acrylic/glass panel
+
+controlStyles:
+  - target: Grid#MainMenu
+    styles:
+      - Visibility=Visible
+      - Width=500
+      - Background=Transparent
+      - CornerRadius=16
+
+  - target: Grid#FrameRoot
+    styles:
+      - MaxHeight=560
+
+  # Hide the bottom navigation/footer area completely.
+  # We already have user/power controls in the YASB top bar.
+  - target: Grid#NavPanePlaceholder
+    styles:
+      - Visibility=Collapsed
+
+  - target: StartDocked.NavigationPaneView#NavigationPane
+    styles:
+      - Visibility=Collapsed
+
+  # Fallbacks in case parts of the navigation pane survive on a specific build.
+  - target: StartDocked.UserTileView
+    styles:
+      - Visibility=Collapsed
+
+  - target: StartDocked.PowerOptionsView#PowerButton
+    styles:
+      - Visibility=Collapsed
+
+  # Remove recommendations/suggestions.
+  - target: GridView#RecommendedList
+    styles:
+      - Visibility=Collapsed
+
+  - target: Windows.UI.Xaml.Controls.Grid#NoTopLevelSuggestionsText
+    styles:
+      - Visibility=Collapsed
+
+  - target: Windows.UI.Xaml.Controls.Grid#TopLevelSuggestionsListHeader
+    styles:
+      - Visibility=Collapsed
+
+  - target: Grid#TopLevelSuggestionsRoot
+    styles:
+      - Visibility=Collapsed
+
+  - target: Grid#TopLevelSuggestionsRoot > Grid[2]
+    styles:
+      - MinHeight=0
+
+  # Clean up the recommendations/action header area.
+  - target: Grid#TopLevelHeader > Grid[2] > Button
+    styles:
+      - Visibility=Collapsed
+
+  # Acrylic shell.
+  - target: Border#AcrylicBorder
+    styles:
+      - Background:=<AcrylicBrush TintColor="#202022" FallbackColor="#202022" TintOpacity="0.22" TintLuminosityOpacity="0.72" Opacity="1"/>
+      - BorderBrush:=<SolidColorBrush Color="#33FFFFFF" />
+      - BorderThickness=1
+      - CornerRadius=16
+
+  - target: Border#AppBorder
+    styles:
+      - Background:=<AcrylicBrush TintColor="#202022" FallbackColor="#202022" TintOpacity="0.18" TintLuminosityOpacity="0.68" Opacity="1"/>
+      - BorderBrush:=<SolidColorBrush Color="#22FFFFFF" />
+      - CornerRadius=16
+
+  # Keep pinned apps comfortable but compact.
+  - target: StartMenu.PinnedList
+    styles:
+      - Margin=14,4,14,10
+
+  - target: Windows.UI.Xaml.Controls.ItemsWrapGrid
+    styles:
+      - Margin=10,0,10,0
+
+  # Search stays visible and becomes the visual header.
+  - target: StartMenu.SearchBoxToggleButton
+    styles:
+      - Margin=16,12,16,10
+      - Height=40
+      - CornerRadius=10
+
+  # Hide the 'Pinned' heading for a cleaner launcher look.
+  - target: Windows.UI.Xaml.Controls.TextBlock#PinnedListHeaderText
+    styles:
+      - Visibility=Collapsed
